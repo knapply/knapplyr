@@ -1,0 +1,29 @@
+Package: knapplyr
+Title: Tools to Facilitate Robust R Programming
+Version: 0.1
+Authors@R: 
+    person("Brendan", "Knapp", 
+           email = "brendan.g.knapp@gmail.com", 
+           role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0003-3284-4972"))
+Description: 
+    Utilities functions to facilitate robust R programming. The package is meant 
+    to serve as a controlled environment for development and testing. The 
+    functions are not so much intended to be imported elsewhere, but instead to
+    make it easy to have sane, tested, dependency-free utilities that can be 
+    copy-paste added to other packages.
+License: GPL-3 + file LICENSE
+Depends: R (>= 3.1)
+Imports:
+    utils
+Suggests:
+    covr,
+    knitr,
+    testthat
+URL: https://github.com/knapply/knapplyr, https://knapply.github.io/knapplyr
+BugReports: https://github.com/knapply/knapplyr/issues
+Encoding: UTF-8
+LazyData: yes
+RoxygenNote: 6.1.1
+Roxygen: list(markdown = TRUE)
+VignetteBuilder: knitr
