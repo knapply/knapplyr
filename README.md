@@ -29,44 +29,14 @@ Utility functions to facilitate robust R programming that are
 development and testing. The functions are not so much intended to be
 imported elsewhere, but instead to make it easy to have sane, tested,
 dependency-free utilities that can be easily used as internal, utility
-functions in other packages. Just add `/R/knapply-utils.R` to your
-package’s `/R` folder and the functions will be accessible.
+functions in other packages.
 
-Considering the intent is that these functions are only used internally
-in packages, there are no exported functions. With that in mind, this
-following examples use `:::`.
+This is mainly for personal purposes, but if you’d like to use it, just
+add the `/R/knapply-utils.R` file to your package’s `/R` folder. The
+functions will then be accessible just like any of your package’s other
+functions.
 
 # Default-ers
-
-``` r
-NULL %||% "common default replacement for `NULL`"
-```
-
-    #> [1] "common default replacement for `NULL`"
-
-``` r
-NULL %{NULL}% "default replacement for `NULL` following curly convention"
-```
-
-    #> [1] "default replacement for `NULL` following curly convention"
-
-``` r
-character(0) %{}% "default empty replacement"
-```
-
-    #> [1] "default empty replacement"
-
-``` r
-NA %{NA}% "default NA replacement"
-```
-
-    #> [1] "default NA replacement"
-
-``` r
-"" %{""}% "default empty string replacement"
-```
-
-    #> [1] "default empty string replacement"
 
 <table>
 
