@@ -1,0 +1,141 @@
+---
+output:
+  github_document:
+    html_preview: true
+always_allow_html: yes
+editor_options: 
+  chunk_output_type: console
+---
+
+
+
+<!-- README.Rmd generates README.md. -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  # collapse = TRUE,
+  fig.align = "center",
+  comment = "#>",
+  fig.path = "man/figures/",
+  message = FALSE,
+  warning = FALSE
+)
+# options(width = 400)
+```
+
+
+# `{knapplyr}`
+
+<!-- badges: start -->
+[![Lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![GitHub last commit](https://img.shields.io/github/last-commit/knapply/knapplyr.svg)](https://github.com/knapply/knapplyr/commits/master)
+[![Codecov test coverage](https://codecov.io/gh/knapply/knapplyr/branch/master/graph/badge.svg)](https://codecov.io/gh/knapply/knapplyr?branch=master)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/knapply/knapplyr?branch=master&svg=true)](https://ci.appveyor.com/project/knapply/knapplyr)
+[![Travis-CI Build Status](https://travis-ci.org/knapply/knapplyr.svg?branch=master)](https://travis-ci.org/knapply/knapplyr)
+[![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Depends](https://img.shields.io/badge/Depends-GNU_R>=3.1-blue.svg)](https://www.r-project.org/)
+[![GitHub code size in bytes](https://img.shields.io/github/languages/code-size/knapply/knapplyr.svg)](https://github.com/knapply/knapplyr)
+[![HitCount](http://hits.dwyl.io/knapply/knapplyr.svg)](http://hits.dwyl.io/knapply/knapplyr)
+<!-- badges: end -->
+
+
+
+ Utility functions to facilitate robust R programming that are _heavily_-inspired by `{purrr}`.
+ 
+ `{knapplyr}` is meant to serve as a controlled environment for development and testing. The functions are not so much intended to be imported elsewhere, but instead to make it easy to have sane, tested, dependency-free utilities that can be easily used as internal, utility functions in other packages. Just add `/R/knapply-utils.R` to your package's `/R` folder and the functions will be accessible.
+
+Considering the intent is that these functions are only used internally in packages, there are no exported functions. With that in mind, this following examples use `:::`.
+
+```{r, echo=FALSE}
+`%||%` <- knapplyr:::`%||%`
+`%{NULL}%` <- knapplyr:::`%{NULL}%`
+`%{}%` <- knapplyr:::`%{}%`
+`%{NA}%` <- knapplyr:::`%{NA}%`
+`%{""}%` <- knapplyr:::`%{""}%`
+```
+
+# Default-ers
+
+```{r}
+NULL %||% "common default replacement for `NULL`"
+NULL %{NULL}% "default replacement for `NULL` following curly convention"
+character(0) %{}% "default empty replacement"
+NA %{NA}% "default NA replacement"
+"" %{""}% "default empty string replacement"
+```
+
+```{r, echo=FALSE}
+library(dplyr)
+foos <- c("`%||%`",
+          "`%{NULL}%`",
+          "`%{}%`",
+          "`%{NA}%`",
+          '`%{""}%`')
+
+exs <- c('NULL %||% "common default NULL replacement"',
+         'NULL %{NULL}% "alternate NULL replacement"',
+         'character(0) %{}% "default empty replacement"',
+         'NA %{NA}% "default NA replacement"',
+         '"" %{""}% "default empty string replacement"')
+
+tibble(`{knapply} Function` = foos, Example = exs) %>% 
+  mutate(Result = glue::glue("`{purrr::map_chr(Example, ~ eval(parse(text = .x)))}`"),
+         Example = glue::glue('`{Example}`')) %>% 
+  knitr::kable(format = "html", escape = FALSE)
+```
+
+
+
+## `.map*()`-ers
+
+```{r, echo=FALSE}
+.map <- knapplyr:::.map
+.map_chr <- knapplyr:::.map_chr
+.map_lgl <- knapplyr:::.map_lgl
+.map_int <- knapplyr:::.map_int
+.map_dbl <- knapplyr:::.map_dbl
+```
+
+```{r}
+l1 <- list(a = 1:3, b = -1:-3)
+l1
+.map(l1, as.character)
+.map_chr(l1, paste, collapse = ", ")
+.map_int(l1, sum)
+.map_dbl(l1, function(x) sum(x) * 2.5)
+.map_lgl(l1, function(x) all(x > 0))
+```
+
+## `.map2*()`-ers
+
+```{r, echo=FALSE}
+.map2 <- knapplyr:::.map2
+.map2_chr <- knapplyr:::.map2_chr
+.map2_lgl <- knapplyr:::.map2_lgl
+.map2_int <- knapplyr:::.map2_int
+.map2_dbl <- knapplyr:::.map2_dbl
+```
+
+```{r}
+l2 <- list(a = 4:6, b = -4:-6)
+l2
+.map2(l1, l2, c)
+.map2_chr(l1, l2, paste, collapse = " | ")
+.map2_int(l1, l2, min)
+.map2_dbl(l1, l2, function(x, y) sort(c(x, y))[[1L]])
+.map2_lgl(l1, l2, function(x, y) all(c(x, y) > 0))
+```
+
+
+```{r, echo=FALSE}
+.set_names <- knapplyr:::.set_names
+```
+
+```{r}
+n <- .set_names("named")
+n
+```
+
+
+
+

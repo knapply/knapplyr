@@ -11,11 +11,9 @@ Description:
     to serve as a controlled environment for development and testing. The 
     functions are not so much intended to be imported elsewhere, but instead to
     make it easy to have sane, tested, dependency-free utilities that can be 
-    copy-paste added to other packages.
+    easily copy and pasted to use as internal functions in other packages.
 License: GPL-3 + file LICENSE
 Depends: R (>= 3.1)
-Imports:
-    utils
 Suggests:
     covr,
     knitr,

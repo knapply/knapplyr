@@ -27,3 +27,65 @@ test_that("mappers actually work", {
     c(x = all(test_list$x > 0), y = all(test_list$y > 0))
   )
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+test_that("0 length input gives 0 length output", {
+  out1 <- .map(list(), identity)
+  expect_equal(out1, list())
+
+  out2 <- .map(NULL, identity)
+  expect_equal(out2, list())
+})
+
+test_that("map() always returns a list", {
+  expect_is(.map(mtcars, mean), "list")
+})
+
+
+test_that("logical and integer NA become correct double NA", {
+  expect_identical(
+    .map_dbl(list(NA, NA_integer_), identity),
+    c(NA_real_, NA_real_)
+  )
+})
+
+
+test_that("map_if() always return a list", {
+  df <- data.frame(x = 1, y = "a", stringsAsFactors = FALSE)
+  expect_identical(.map_if(df, is.character, function(x) "out"),
+                   list(x = 1, y = "out"))
+})
+
+
+test_that("map_if requires predicate functions", {
+  expect_error(.map_if(1:3, function(.x) NA, function(.x) "foo"))
+})
+
+test_that("`.else` maps false elements", {
+  expect_identical(.map_if(-1:1, function(.x) .x > 0, paste,
+                          .else = function(.x) "bar", "suffix"),
+                   list("bar", "bar", "1 suffix"))
+})

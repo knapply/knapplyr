@@ -8,7 +8,6 @@ cache: packages
 
 os:
   - linux
-  -osx
 
 jobs:
   include:
